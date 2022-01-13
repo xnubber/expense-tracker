@@ -20,12 +20,12 @@ const recordSchema = new Schema({
     index: true,
     required: true
   },
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    index: true,
-    required: true
-  }
+  // userId: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'User',
+  //   index: true,
+  //   required: true
+  // }
 })
 
 const Record = mongoose.model('Record', recordSchema)

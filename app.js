@@ -22,13 +22,16 @@ db.on('open', () => {
 
 // tools
 const moment = require('moment')
+app.use(express.urlencoded({extended: true}))
 
 // express-handlebars
 const {engine} = require('express-handlebars')
+const { urlencoded } = require('express')
 app.engine('hbs', engine({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
 // router
+// index
 app.get('/', async (req, res) => {
   const {sort} = req.query
   let sortOption = ''
@@ -80,6 +83,20 @@ app.get('/', async (req, res) => {
   totalAmount = totalAmountSort ? totalAmountSort : totalAmount
   
   res.render('index', { records, totalAmount})
+})
+
+// create
+app.get('/expense/new', (req, res) => {
+  res.render('new')
+})
+
+app.post('/expense', async (req, res) => {
+  const {name, date, amount, category} = req.body
+  const findCategory = await Category.findOne({name: category})
+  const categoryId = findCategory._id
+  const record = new Record({name, date, amount, categoryId})
+  await record.save()
+  res.redirect('/')
 })
 
 app.listen(PORT, () => {
