@@ -33,11 +33,12 @@ db.once('open', async () => {
   const userId = user._id
   const category = await Category.find({})
 
-  for(let i = 0; i < 10; i++) {
+  for(let i = 0; i < 5; i++) {
     let rand = Math.floor(Math.random() * 5)
     const record = new Record({
       name: `name-${i}`,
-      amount: i,
+      amount: i + 1,
+      date: Date.now(),
       categoryId: category[rand]._id,
       userId: userId
     })
