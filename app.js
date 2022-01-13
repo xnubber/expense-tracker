@@ -3,6 +3,9 @@ const express = require('express')
 const app = express()
 const PORT = 3000
 
+// models
+const Record = require('./models/record')
+
 // mongoose
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/expense-tracker')
@@ -22,7 +25,8 @@ app.engine('hbs', engine({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
 // router
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
+  const records = await Record.find({})
   res.render('index')
 })
 
