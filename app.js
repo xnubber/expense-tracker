@@ -24,7 +24,7 @@ app.set('view engine', 'hbs')
 
 // router
 app.use(routes)
-app.use(errorHandler)
+// app.use(errorHandler)
 
 app.listen(PORT, () => {
   console.log(`Listening on Port: ${PORT}`)
