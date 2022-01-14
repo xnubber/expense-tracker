@@ -8,17 +8,7 @@ const Record = require('./models/record')
 const Category = require('./models/category')
 
 // mongoose
-const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/expense-tracker')
-const db = mongoose.connection
-
-db.on('error', () => {
-  console.log('Mongodb error!')
-})
-
-db.on('open', () => {
-  console.log('Mongodb connected!')
-})
+require('./config/mongoose')
 
 // tools
 const moment = require('moment')

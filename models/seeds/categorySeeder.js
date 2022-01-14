@@ -1,14 +1,4 @@
-const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/expense-tracker')
-const db = mongoose.connection
-
-db.on('error', () => {
-  console.log('Mongodb error!')
-})
-
-db.on('open', () => {
-  console.log('Mongodb connected!')
-})
+const db = require('../../config/mongoose')
 
 const Category = require('../category')
 const CATEGORY = [
@@ -44,5 +34,6 @@ db.once('open', async () => {
     })
     await category.save()
   }
+  console.log('categorySeeder done')
   process.exit()
 })
