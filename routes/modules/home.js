@@ -3,8 +3,9 @@ const router = express.Router()
 const moment = require('moment')
 const Record = require('../../models/record')
 const Category = require('../../models/category')
+const catchAsync = require('../../helpers/catchAsync')
 
-router.get('/', async (req, res) => {
+router.get('/', catchAsync(async (req, res) => {
   const { sort } = req.query
   let sortOption = ''
   switch (sort) {
@@ -55,6 +56,6 @@ router.get('/', async (req, res) => {
   totalAmount = totalAmountSort ? totalAmountSort : totalAmount
 
   res.render('index', { records, totalAmount })
-})
+}))
 
 module.exports = router
