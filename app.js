@@ -22,6 +22,9 @@ db.on('open', () => {
 
 // tools
 const moment = require('moment')
+require('./helpers/handlerbarHelper')
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'))
 app.use(express.urlencoded({extended: true}))
 
 // express-handlebars
@@ -96,6 +99,32 @@ app.post('/expense', async (req, res) => {
   const categoryId = findCategory._id
   const record = new Record({name, date, amount, categoryId})
   await record.save()
+  res.redirect('/')
+})
+
+// update
+app.get('/expense/:id/edit', async (req, res) => {
+  const _id = req.params.id
+  const record = await Record.findOne({_id}).lean().populate('categoryId')
+  record.date = moment(record.date).format('YYYY-MM-DD')
+  res.render('edit', {record})
+})
+
+app.put('/expense/:id', async (req, res) => {
+  const _id = req.params.id
+  const {name, date, category, amount} = req.body
+  const record = await Record.findOne({_id})
+  const findCategory = await Category.findOne({ name: category })
+  const categoryId = findCategory._id
+  await record.updateOne({name, date, categoryId, amount})
+  res.redirect('/')
+})
+
+// delete
+app.delete('/expense/:id', async (req, res) => {
+  const _id = req.params.id
+  const record = await Record.findOne({_id})
+  await record.remove()
   res.redirect('/')
 })
 
