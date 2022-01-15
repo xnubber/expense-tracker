@@ -1,8 +1,9 @@
 // express
 const express = require('express')
 const app = express()
-const PORT = 3000
-
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 // mongoose
 require('./config/mongoose')
 
@@ -12,7 +13,9 @@ const routes = require('./routes')
 // tools
 const session = require('express-session')
 const flash = require('connect-flash')
+
 require('./helpers/handlerbarHelper')
+const PORT = process.env.PORT
 const errorHandler = require('./helpers/errorHandler')
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'))
@@ -31,7 +34,7 @@ const userPassport = require('./config/passport')
 
 // 
 app.use(session({
-  secret: 'ThisIsMySecret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))
