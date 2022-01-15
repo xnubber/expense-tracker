@@ -14,7 +14,7 @@ db.once('open', async () => {
   await Record.deleteMany({})
   await User.deleteMany({})
   const user = new User({
-    name: SEED_USER.name,
+    username: SEED_USER.name,
     email: SEED_USER.email,
     password: SEED_USER.password
   })
