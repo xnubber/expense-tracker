@@ -1,6 +1,8 @@
 // express
 const express = require('express')
 const app = express()
+
+// dotenv
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
@@ -32,7 +34,7 @@ app.set('view engine', 'hbs')
 // passport
 const userPassport = require('./config/passport')
 
-// 
+// session & flash & local var
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,

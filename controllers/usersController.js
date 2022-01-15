@@ -1,5 +1,6 @@
 const User = require('../models/user')
 
+// login
 module.exports.renderLogin = (req, res) => {
   res.render('login')
 }
@@ -10,6 +11,7 @@ module.exports.validateLogin = (req, res) => {
   res.redirect('/')
 }
 
+// register
 module.exports.renderRegister = (req, res) => {
   res.render('register')
 }
@@ -28,6 +30,7 @@ module.exports.createUser = async (req, res) => {
     }
     const newUser = new User({ username, email })
     const registerUser = await User.register(newUser, password)
+    // login after register
     req.login(registerUser, err => {
       if (err) return next(err)
       req.flash('success_msg', `Welcome! ${registerUser.username}`)
@@ -39,6 +42,7 @@ module.exports.createUser = async (req, res) => {
   }
 }
 
+// logout
 module.exports.logout = (req, res) => {
   req.flash('success_msg', 'Successfully logout.')
   req.logout()
