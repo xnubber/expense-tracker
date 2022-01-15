@@ -10,11 +10,17 @@ require('./config/mongoose')
 const routes = require('./routes')
 
 // tools
+const session = require('express-session')
 require('./helpers/handlerbarHelper')
 const errorHandler = require('./helpers/errorHandler')
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'))
 app.use(express.urlencoded({extended: true}))
+app.use(session({
+  secret: 'ThisIsMySecret',
+  resave: false,
+  saveUninitialized: true
+}))
 
 // express-handlebars
 const {engine} = require('express-handlebars')
