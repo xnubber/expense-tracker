@@ -32,7 +32,6 @@ router.post('/register', catchAsync(async (req, res) => {
     }
     const newUser = new User({ username, email })
     const registerUser = await User.register(newUser, password)
-    console.log(registerUser)
     req.flash('success_msg', 'Welcome!')
     res.redirect('/')
   } catch(err) {
@@ -41,5 +40,10 @@ router.post('/register', catchAsync(async (req, res) => {
   }
 }))
 
+router.get('/logout', (req, res) => {
+  req.flash('success_msg', 'Successfully logout.')
+  req.logout()
+  res.redirect('/users/login')
+})
 
 module.exports = router

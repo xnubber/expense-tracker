@@ -4,6 +4,7 @@ const Record = require('../record')
 const Category = require('../category')
 const User = require('../user')
 
+
 const SEED_USER = {
   name: 'user1',
   email: 'user1@example.com',
@@ -16,11 +17,10 @@ db.once('open', async () => {
   const user = new User({
     username: SEED_USER.name,
     email: SEED_USER.email,
-    password: SEED_USER.password
   })
-  await user.save()
+  const registerUser = await User.register(user, SEED_USER.password)
 
-  const userId = user._id
+  const userId = registerUser._id
   const category = await Category.find({})
 
   for(let i = 0; i < 5; i++) {
