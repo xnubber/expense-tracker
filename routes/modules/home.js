@@ -6,6 +6,7 @@ const Category = require('../../models/category')
 const catchAsync = require('../../helpers/catchAsync')
 
 router.get('/', catchAsync(async (req, res) => {
+  const userId = req.user._id
   const { sort } = req.query
   let sortOption = ''
   switch (sort) {
@@ -29,7 +30,7 @@ router.get('/', catchAsync(async (req, res) => {
   let totalAmountSort = 0
   let totalAmount = 0
 
-  const totalRecords = await Record.find({})
+  const totalRecords = await Record.find({userId})
     .lean()
     .populate('categoryId')
 
@@ -45,16 +46,15 @@ router.get('/', catchAsync(async (req, res) => {
     totalAmountSort += record.amount
   })
 
-  if (sortRecords.length === 0 && sortOption === '') {
+  if (sortRecords.length === 0 && !sortOption) {
     sortRecords = null
-  } else if (sortRecords.length === 0 && sortOption !== '') {
-    console.log('該類別無項目')
-    sortRecords = null
+  } else if (sortRecords.length === 0 && sortOption) {
+    req.flash('warning_msg', 'This category does not have any item')
+    return res.redirect('/')
   }
 
   const records = sortRecords ? sortRecords : totalRecords
   totalAmount = totalAmountSort ? totalAmountSort : totalAmount
-  req.flash('warnig_msg', 'User already exists.')
   res.render('index', { records, totalAmount })
 }))
 

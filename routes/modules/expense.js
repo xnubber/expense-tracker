@@ -11,10 +11,11 @@ router.get('/new', (req, res) => {
 })
 
 router.post('/', catchAsync(async (req, res) => {
+  const userId = req.user._id
   const { name, date, amount, category } = req.body
   const findCategory = await Category.findOne({ name: category })
   const categoryId = findCategory._id
-  const record = new Record({ name, date, amount, categoryId })
+  const record = new Record({ name, date, amount, categoryId, userId })
   await record.save()
   req.flash('success_msg', 'Expense has been added.')
   res.redirect('/')
@@ -22,26 +23,30 @@ router.post('/', catchAsync(async (req, res) => {
 
 // update
 router.get('/:id/edit', catchAsync(async (req, res) => {
+  const userId = req.user._id
   const _id = req.params.id
-  const record = await Record.findOne({ _id }).lean().populate('categoryId')
+  const record = await Record.findOne({ _id, userId }).lean().populate('categoryId')
   record.date = moment(record.date).format('YYYY-MM-DD')
   res.render('edit', { record })
 }))
 
 router.put('/:id', catchAsync(async (req, res) => {
+  const userId = req.user._id
   const _id = req.params.id
   const { name, date, category, amount } = req.body
-  const record = await Record.findOne({ _id })
+  const record = await Record.findOne({ _id, userId })
   const findCategory = await Category.findOne({ name: category })
   const categoryId = findCategory._id
   await record.updateOne({ name, date, categoryId, amount })
+  req.flash('success_msg', 'Expense has been updated.')
   res.redirect('/')
 }))
 
 // delete
 router.delete('/:id', catchAsync(async (req, res) => {
+  const userId = req.user._id
   const _id = req.params.id
-  const record = await Record.findOne({ _id })
+  const record = await Record.findOne({ _id, userId })
   await record.remove()
   res.redirect('/')
 }))
