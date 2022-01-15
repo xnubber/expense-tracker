@@ -16,6 +16,7 @@ router.post('/', catchAsync(async (req, res) => {
   const categoryId = findCategory._id
   const record = new Record({ name, date, amount, categoryId })
   await record.save()
+  req.flash('success_msg', 'Expense has been added.')
   res.redirect('/')
 }))
 

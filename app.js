@@ -11,22 +11,34 @@ const routes = require('./routes')
 
 // tools
 const session = require('express-session')
+const flash = require('connect-flash')
 require('./helpers/handlerbarHelper')
 const errorHandler = require('./helpers/errorHandler')
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'))
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
+
+
+
+
+// express-handlebars
+const exphbs = require('express-handlebars')
+app.engine('hbs', exphbs.engine({ defaultLayout: 'main', extname: '.hbs' }))
+app.set('view engine', 'hbs')
+
+// 
 app.use(session({
   secret: 'ThisIsMySecret',
   resave: false,
   saveUninitialized: true
 }))
+app.use(flash())
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.warning_msg = req.flash('warning_msg')
+  next()
+})
 
-// express-handlebars
-const {engine} = require('express-handlebars')
-const { urlencoded } = require('express')
-app.engine('hbs', engine({ defaultLayout: 'main', extname: '.hbs' }))
-app.set('view engine', 'hbs')
 
 // router
 app.use(routes)

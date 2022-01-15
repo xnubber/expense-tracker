@@ -54,7 +54,7 @@ router.get('/', catchAsync(async (req, res) => {
 
   const records = sortRecords ? sortRecords : totalRecords
   totalAmount = totalAmountSort ? totalAmountSort : totalAmount
-
+  req.flash('warnig_msg', 'User already exists.')
   res.render('index', { records, totalAmount })
 }))
 
