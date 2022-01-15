@@ -1,0 +1,7 @@
+<div class="container alert alert-danger mt-3" role="alert">
+  <h1 id="not-found" class="d-flex justify-content-center mt-5">{{#if err.message}} {{err.message}} {{else}} Page Not
+    Found
+    {{/if}}</h1>
+  <p>{{err.stack}}</p>
+  <a href="/" class="d-flex justify-content-center mt-5 mb-auto">Back</a>
+</div>
